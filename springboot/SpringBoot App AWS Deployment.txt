@@ -1,0 +1,58 @@
+SpringBoot App AWS Deployment
+=================================
+
+Step 1: Build SpringBoot project with DB
+Step 2: Package SpringBoot app (mvn package) -> JAR file
+
+Step 3: Create an instance (EC2 - AWS) Linux based
+Step 4: Connect the instance in terminal using SSH (Secure Shell) on Port 22
+	-> ssh -i "key-pair.pem" user@host 
+	-> Note: We can get this command from EC2 > instances > ur-instance > connect > SSH
+
+Step 5: Install Java on instance
+	-> sudo su
+	-> wget "Java 21 x64 Compressed Archive url"
+	-> tar -xvzf jdk-21...bin.tar.gz
+	-> mv jdk-21.0.8 /opt/jdk-21
+	-> nano /etc/profile.d/jdk21.sh
+	-> export JAVA_HOME=/opt/jdk-21
+	-> export PATH=$JAVA_HOME/bin:$PATH
+	-> Press Ctrl + X
+	-> Press Y
+	-> Press Enter
+	-> source /etc/profile.d/jdk21.sh
+	-> java --version
+
+Step 6: Create a directory of your app
+	-> mkdir app in /opt
+
+Step 7: Convert pem file to ppk
+	-> Open PuttyGen
+	-> Click on 'Load'
+	-> Click on 'Save private key'
+
+Step 8: Transfer build to server (Deployment of JAR file)
+	-> Open FileZilla
+	-> Click on File
+	-> Click on Site Manager
+	-> Click on New site
+	-> Select Protocol -> SFTP
+	-> Enter Host (Public DNS)("ec2-1-1-3-.domain.aws.com")
+	-> Enter Port (22)
+	-> Select Logon Type (Key file)
+	-> Enter user (ec2-user)
+	-> Locate Key file (.ppk)
+	-> Click on connect
+	-> Transfer JAR file to server (/home/ec2-user)
+	-> Now on server (mv /home/ec2-user/something.jar /opt/app)
+
+Step 9: Start the server
+	-> java -jar something.jar
+
+Step 10: Now test it on Postman
+	-> host (Public IPv4 address / Public DNS)
+
+	
+	
+
+	
